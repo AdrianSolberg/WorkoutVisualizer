@@ -1,6 +1,16 @@
 import re
 import json
 
+# Convert dd.mm.yyyy to yyyy-mm-dd
+def parse_date(date_str):
+    day, month, year = date_str.split(".")
+    return f"{year}-{month.zfill(2)}-{day.zfill(2)}"
+
+def parse_weight(weight_str):
+    if not weight_str:
+        return None
+    return float(weight_str.replace("kg", "").replace(",", "."))
+
 with open('logs/traininglog2.txt', 'r') as file:
     lines = file.readlines()
 
@@ -22,11 +32,10 @@ for line in lines:
 
     # New workout starts with a date and body weight (morning and evening)
     if re.match(r'^\d{2}\.\d{2}\.\d{4}', line):
-        print(line)
         date_and_weights = line.split(" ")
-        date = date_and_weights[0]
-        morning_weight = date_and_weights[1] if len(date_and_weights) > 1 and date_and_weights[1] != "?" else None
-        evening_weight = date_and_weights[2] if len(date_and_weights) > 2 and date_and_weights[2] != "?" else None
+        date = parse_date(date_and_weights[0])
+        morning_weight = parse_weight(date_and_weights[1]) if len(date_and_weights) > 1 and date_and_weights[1] != "?" else None
+        evening_weight = parse_weight(date_and_weights[2]) if len(date_and_weights) > 2 and date_and_weights[2] != "?" else None
 
         workout = {
             "date": date,
