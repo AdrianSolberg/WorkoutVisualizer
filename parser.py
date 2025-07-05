@@ -1,4 +1,5 @@
 import re
+import json
 
 with open('logs/traininglog2.txt', 'r') as file:
     lines = file.readlines()
@@ -72,6 +73,5 @@ for line in lines:
 if workout is not None:
     workouts.append(workout)  # Append the last workout if it exists
 
-for workout in workouts:
-    print(workout)
-    print()
+with open('json_log_output/workouts.json', 'w') as f:
+    json.dump(workouts, f, indent=4)
