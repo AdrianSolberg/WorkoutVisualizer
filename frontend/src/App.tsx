@@ -1,4 +1,3 @@
-import './App.css'
 import { ChartLine } from './components/ChartLine'
 import { StatCards } from './components/StatCards'
 
