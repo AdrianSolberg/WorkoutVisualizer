@@ -11,6 +11,11 @@ def parse_weight(weight_str):
         return None
     return float(weight_str.replace("kg", "").replace(",", "."))
 
+def parse_reps(reps_str):
+    if not reps_str:
+        return None
+    return float(reps_str.replace("r", "").replace(",", "."))
+
 with open('logs/traininglog2.txt', 'r') as file:
     lines = file.readlines()
 
@@ -57,14 +62,14 @@ for line in lines:
 
         for part in parts:
             if "kg" in part:
-                sets.append({"weight": part})
+                sets.append({"weight": parse_weight(part)})
             elif "r" in part:
                 if len(sets) == 0:
-                    sets.append({"weight": None, "reps": part})
+                    sets.append({"weight": None, "reps": parse_reps(part)})
                 elif "reps" not in sets[-1]:
-                    sets[-1]["reps"] = part
+                    sets[-1]["reps"] = parse_reps(part)
                 else:
-                    sets.append({"weight": sets[-1]["weight"], "reps": part})
+                    sets.append({"weight": sets[-1]["weight"], "reps": parse_reps(part)})
 
         if len(workout["exercises"]) > 0 and len(sets) > 0:
             workout["exercises"][-1]["sets"] = sets
