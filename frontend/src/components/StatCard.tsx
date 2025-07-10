@@ -18,7 +18,7 @@ export function StatCard({ stat_name, stat_value, trend }: StatCardInterface) {
                 </CardTitle>
                 <CardAction>
                 <Badge variant="outline">
-                    <IconTrendingUp />
+                    {trend > 0 ? <IconTrendingUp /> : <IconTrendingDown />}
                     {trend > 0 ? "+" : ""}{trend.toFixed(2)}%
                 </Badge>
                 </CardAction>
