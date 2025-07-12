@@ -3,6 +3,7 @@ import * as React from "react"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -16,6 +17,9 @@ import {
 } from "@/shadcn/ui/chart"
 export const description = "An interactive line chart"
 import workoutsRaw from "../../../json_log_output/workouts.json" 
+import { useState } from "react"
+import { ToggleGroup, ToggleGroupItem } from "@/shadcn/ui/toggle-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shadcn/ui/select"
 
 const chartData = workoutsRaw.filter((w: any) => w.date && w.morning_weight !== null);
 
@@ -30,8 +34,24 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartLine() {
-  const [activeChart, _] =
-    React.useState<keyof typeof chartConfig>("morning_weight")
+  const [activeChart, _] = useState<keyof typeof chartConfig>("morning_weight")
+  const [timeRange, setTimeRange] = useState<string>("all_time")
+
+  const filteredData = chartData.filter((item) => {
+    if (timeRange === "all_time") { 
+      return true
+    }
+    
+    const workout_date = new Date(item.date)
+    let daysToSubtract = 90
+    if (timeRange === "year") {
+      daysToSubtract = 365
+    }
+
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - daysToSubtract)
+    return workout_date >= startDate
+  })
 
   return (
     <Card className="py-4 sm:py-0">
@@ -42,6 +62,39 @@ export function ChartLine() {
             Showing morning weight over time
           </CardDescription>
         </div>
+        <CardAction className="px-6 pb-3 sm:pb-0 pt-4">
+          <ToggleGroup
+            type="single"
+            value={timeRange}
+            onValueChange={setTimeRange}
+            variant="outline"
+            className="hidden *:data-[slot=toggle-group-item]:!px-4 @[767px]/card:flex"
+          >
+            <ToggleGroupItem value="90d">Last 3 months</ToggleGroupItem>
+            <ToggleGroupItem value="year">Last year</ToggleGroupItem>
+            <ToggleGroupItem value="all_time">All time</ToggleGroupItem>
+          </ToggleGroup>
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger
+              className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
+              size="sm"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder="Last 3 months" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="90d" className="rounded-lg">
+                Last 3 months
+              </SelectItem>
+              <SelectItem value="year" className="rounded-lg">
+                Last year
+              </SelectItem>
+              <SelectItem value="all_time" className="rounded-lg">
+                All time
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </CardAction>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
@@ -50,7 +103,7 @@ export function ChartLine() {
         >
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={filteredData}
             margin={{
               left: 12,
               right: 12,
