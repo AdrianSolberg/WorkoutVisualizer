@@ -16,13 +16,33 @@ def parse_reps(reps_str):
         return None
     return float(reps_str.replace("r", "").replace(",", "."))
 
-with open('logs/traininglog2.txt', 'r') as file:
+with open('logs/traininglog.txt', 'r') as file:
     lines = file.readlines()
 
 workouts = []
 
 lines.pop(0)  # Remove the header line
+
+for line in lines:
+    line = line.replace("Svart strikk", "-10kg")
+    line = line.replace("svart strikk", "-10kg")
+    line = line.replace("Lilla strikk", "-20kg")
+    line = line.replace("lilla strikk", "-20kg")
+
+replacements = [
+    ("Svart strikk", "-10kg"),
+    ("svart strikk", "-10kg"),
+    ("Lilla strikk", "-20kg"),
+    ("lilla strikk", "-20kg"),
+]
+
+for i, line in enumerate(lines):
+    for old, new in replacements:
+        line = line.replace(old, new)
+    lines[i] = line
+
 workout = None
+parenthesis_open = False
 for line in lines:
     line = line.strip()
 
@@ -34,6 +54,18 @@ for line in lines:
     elif not line: 
         continue
 
+    # If the line starts with "(", it indicates that it wasn't actually part of the workout
+    # Therefore, skip all lines until closing parenthesis
+    if line[0] == "(":
+        parenthesis_open = True
+
+    if parenthesis_open:
+        if ")" in line:
+            parenthesis_open = False
+        continue
+
+    if line == "Annenhver":
+        continue  # Skip lines that are just "Annenhver"
 
     # New workout starts with a date and body weight (morning and evening)
     if re.match(r'^\d{2}\.\d{2}\.\d{4}', line):
