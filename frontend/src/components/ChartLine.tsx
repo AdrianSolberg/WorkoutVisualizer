@@ -15,12 +15,16 @@ import {
   ChartTooltipContent,
 } from "@/shadcn/ui/chart"
 export const description = "An interactive line chart"
-import workoutsRaw from "../../../json_log_output/workouts.json" 
 import { useState } from "react"
 import { ToggleGroup, ToggleGroupItem } from "@/shadcn/ui/toggle-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shadcn/ui/select"
 
-const chartData = workoutsRaw.filter((w: any) => w.date && w.morning_weight !== null);
+
+interface ChartLineInterface {
+  data: any[]
+  timeRange: string
+  setTimeRange: (value: string) => void
+}
 
 const chartConfig = {
   weight: {
@@ -32,25 +36,8 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function ChartLine() {
+export function ChartLine({ data, timeRange, setTimeRange }: ChartLineInterface) {
   const [activeChart, _] = useState<keyof typeof chartConfig>("morning_weight")
-  const [timeRange, setTimeRange] = useState<string>("all_time")
-
-  const filteredData = chartData.filter((item) => {
-    if (timeRange === "all_time") { 
-      return true
-    }
-    
-    const workout_date = new Date(item.date)
-    let daysToSubtract = 90
-    if (timeRange === "year") {
-      daysToSubtract = 365
-    }
-
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-    return workout_date >= startDate
-  })
 
   return (
     <Card className="py-4 sm:py-0">
@@ -102,7 +89,7 @@ export function ChartLine() {
         >
           <LineChart
             accessibilityLayer
-            data={filteredData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
