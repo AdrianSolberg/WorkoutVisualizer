@@ -12,8 +12,8 @@ export const get_current_weight = (morning: boolean): number => {
     return 0; 
 }
 
-export const get_weight_trend = (morning: boolean): number => {
-    const weights = workoutsRaw.map(workout => morning ? workout.morning_weight : workout.evening_weight).filter(Boolean);
+export const get_weight_trend = (data: any[], morning: boolean): number => {
+    const weights = data.map(workout => morning ? workout.morning_weight : workout.evening_weight).filter(Boolean);
     if (weights.length < 2) return 0;
 
     const latestWeight = Number(weights[weights.length - 1]);
