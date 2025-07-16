@@ -25,7 +25,7 @@ export function StatCard({ stat_name, stat_value, trend }: StatCardInterface) {
             </CardHeader>
             <CardFooter className="flex-col items-start gap-1.5 text-sm">
                 <div className="line-clamp-1 flex gap-2 font-medium">
-                    Trending {trend > 0 ? "up" : "down"} this month {trend > 0 ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
+                    Trending {trend > 0 ? "up" : "down"} this period {trend > 0 ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
                 </div>
                 <div className="text-muted-foreground">
                     {stat_name === "Weight" ? "Current body weight." : `Current estimated 1RM.`}
