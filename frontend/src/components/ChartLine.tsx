@@ -37,17 +37,54 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartLine({ data, timeRange, setTimeRange }: ChartLineInterface) {
-  const [activeChart, _] = useState<keyof typeof chartConfig>("morning_weight")
+  const [activeChart, setActiveChart] = useState<string>("morning_weight")
 
   return (
     <Card className="py-4 sm:py-0">
       <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0 pt-4">
-          <CardTitle>{chartConfig[activeChart].label}</CardTitle>
+          <CardTitle>{chartConfig.morning_weight.label}</CardTitle>
           <CardDescription className="pb-4">
             Showing morning weight over time
           </CardDescription>
         </div>
+        <CardAction className="px-6 pb-3 sm:pb-0 pt-4">
+          <ToggleGroup
+            type="single"
+            value={activeChart}
+            onValueChange={setActiveChart}
+            variant="outline"
+            className="hidden *:data-[slot=toggle-group-item]:!px-4 @[767px]/card:flex"
+          >
+            <ToggleGroupItem value="90d">Morning weight</ToggleGroupItem>
+            <ToggleGroupItem value="90d">Incline Dumbell Press</ToggleGroupItem>
+            <ToggleGroupItem value="year">Military press</ToggleGroupItem>
+            <ToggleGroupItem value="all_time">Pullups</ToggleGroupItem>
+          </ToggleGroup>
+          <Select value={activeChart} onValueChange={setActiveChart}>
+            <SelectTrigger
+              className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
+              size="sm"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder="Morning weight" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="morning_weight" className="rounded-lg">
+                Morning weight
+              </SelectItem>
+              <SelectItem value="skråbenk" className="rounded-lg">
+                Incline dumbell press
+              </SelectItem>
+              <SelectItem value="militærpress" className="rounded-lg">
+                Military press
+              </SelectItem>
+              <SelectItem value="pullups" className="rounded-lg">
+                Pullups
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </CardAction>
         <CardAction className="px-6 pb-3 sm:pb-0 pt-4">
           <ToggleGroup
             type="single"
@@ -131,9 +168,9 @@ export function ChartLine({ data, timeRange, setTimeRange }: ChartLineInterface)
               }
             />
             <Line
-              dataKey={activeChart}
+              dataKey={"morning_weight"}
               type="monotone"
-              stroke={`var(--color-${activeChart})`}
+              stroke={`var(--color-${"morning_weight"})`}
               strokeWidth={2}
               dot={false}
             />
