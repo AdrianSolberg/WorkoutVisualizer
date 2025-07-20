@@ -48,7 +48,7 @@ export function ChartLine({ data, timeRange, setTimeRange }: ChartLineInterface)
             Showing morning weight over time
           </CardDescription>
         </div>
-        <CardAction className="px-6 pb-3 sm:pb-0 pt-4">
+        <CardAction className="pb-3 sm:pb-0 pt-4">
           <ToggleGroup
             type="single"
             value={activeChart}
