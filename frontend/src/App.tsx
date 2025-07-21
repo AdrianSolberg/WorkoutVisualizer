@@ -4,11 +4,12 @@ import { StatCards } from './components/StatCards'
 import { Card } from './shadcn/ui/card'
 import workoutLog from "../../json_log_output/workouts.json" 
 import { useState } from 'react'
+import type { LogItem } from './types/workoutLogTypes'
 
 function App() {
   const [timeRange, setTimeRange] = useState<string>("all_time")
-  
-  const filteredData = workoutLog.filter((item: any) => {
+
+  const filteredData: LogItem[] = workoutLog.map(item => item as LogItem).filter((item: LogItem) => {
     if (timeRange === "all_time") { 
       return true
     }
@@ -32,7 +33,7 @@ function App() {
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             <StatCards data={filteredData}/>
             <div className="px-4 lg:px-6">
-              <ChartLine data={filteredData.filter((w: any) => w.morning_weight !== null)} timeRange={timeRange} setTimeRange={setTimeRange} />
+              <ChartLine data={filteredData.filter((w: LogItem) => w.morning_weight !== null)} timeRange={timeRange} setTimeRange={setTimeRange} />
             </div>
           </div>
         </div>

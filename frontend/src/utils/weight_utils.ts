@@ -1,3 +1,4 @@
+import type { LogItem } from "@/types/workoutLogTypes";
 import workoutsRaw from "../../../json_log_output/workouts.json"
 
 export const get_current_weight = (morning: boolean): number => {
@@ -12,7 +13,7 @@ export const get_current_weight = (morning: boolean): number => {
     return 0; 
 }
 
-export const get_weight_trend = (data: any[], morning: boolean): number => {
+export const get_weight_trend = (data: LogItem[], morning: boolean): number => {
     const weights = data.map(workout => morning ? workout.morning_weight : workout.evening_weight).filter(Boolean);
     if (weights.length < 2) return 0;
 

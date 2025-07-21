@@ -18,10 +18,11 @@ export const description = "An interactive line chart"
 import { useState } from "react"
 import { ToggleGroup, ToggleGroupItem } from "@/shadcn/ui/toggle-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shadcn/ui/select"
+import type { LogItem } from "@/types/workoutLogTypes"
 
 
 interface ChartLineInterface {
-  data: any[]
+  data: LogItem[]
   timeRange: string
   setTimeRange: (value: string) => void
 }

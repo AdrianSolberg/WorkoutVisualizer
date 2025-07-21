@@ -1,9 +1,10 @@
 import { StatCard } from "./StatCard";
 import { get_current_max, get_current_max_trend } from "../utils/exercise-utils";
 import { get_current_weight, get_weight_trend } from "@/utils/weight_utils";
+import type { LogItem } from "@/types/workoutLogTypes";
 
 interface StatCardsInterface {
-  data: any[];
+  data: LogItem[];
 }
 
 export function StatCards({ data }: StatCardsInterface) {

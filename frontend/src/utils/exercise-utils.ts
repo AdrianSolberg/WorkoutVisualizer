@@ -1,3 +1,4 @@
+import type { LogItem } from "@/types/workoutLogTypes";
 import workoutsRaw from "../../../json_log_output/workouts.json"
 import { one_rep_max } from "./1RM-calc";
 
@@ -17,11 +18,11 @@ export const get_current_max = (exercise: string):number => {
     return 0;
 }
 
-export const get_current_max_trend = (data: any[], exercise: string): number => {
+export const get_current_max_trend = (data: LogItem[], exercise: string): number => {
     const currentMax = get_current_max(exercise);
     for (const workout of data) {
-        if (workout.exercises.map((e:any) => e.name).includes(exercise)) {
-            const exerciseObj = workout.exercises.find((e:any) => e.name === exercise);
+        if (workout.exercises.map(e => e.name).includes(exercise)) {
+            const exerciseObj = workout.exercises.find(e => e.name === exercise);
             if (exerciseObj && exerciseObj.sets && exerciseObj.sets.length > 0) {
                 const set = exerciseObj.sets[0];
                 const weight = Number(set.weight) || 0;
