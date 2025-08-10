@@ -1,14 +1,14 @@
 // Lombardi formula for calculating one-rep max (1RM) based on weight and reps is most accurate for
 export const one_rep_max = (weight: number, reps: number): number => {
-  return lombardi_formula(weight, reps);
-}
+    return lombardi_formula(weight, reps);
+};
 
 const lombardi_formula = (weight: number, reps: number): number => {
-  if (reps <= 0) {
-    throw new Error("Reps must be greater than 0");
-  }
-  return weight * Math.pow(reps, 0.10);
-}
+    if (reps <= 0) {
+        throw new Error("Reps must be greater than 0");
+    }
+    return weight * Math.pow(reps, 0.1);
+};
 
 /* const epley_formula = (weight: number, reps: number): number => {
   if (reps <= 0) {

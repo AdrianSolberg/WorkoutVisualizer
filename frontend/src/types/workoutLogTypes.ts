@@ -6,8 +6,8 @@ export interface LogItem {
 }
 
 export interface Exercise {
-  name: string;
-  sets: Set[];
+    name: string;
+    sets: Set[];
 }
 
 export interface Set {
