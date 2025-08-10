@@ -9,9 +9,8 @@ import type { LogItem } from "./types/workoutLogTypes";
 function App() {
     const [timeRange, setTimeRange] = useState<string>("all_time");
 
-    const filteredData: LogItem[] = workoutLog
-        .map((item) => item as LogItem)
-        .filter((item: LogItem) => {
+    const filteredData: LogItem[] = (workoutLog as LogItem[]).filter(
+        (item: LogItem) => {
             if (timeRange === "all_time") {
                 return true;
             }
@@ -25,7 +24,8 @@ function App() {
             const startDate = new Date();
             startDate.setDate(startDate.getDate() - daysToSubtract);
             return workout_date >= startDate;
-        });
+        },
+    );
 
     return (
         <Card className="m-2 py-0 gap-1">

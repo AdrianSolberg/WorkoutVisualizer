@@ -9,19 +9,30 @@ def parse_date(date_str):
 def parse_weight(weight_str):
     if not weight_str:
         return None
-    return float(weight_str.replace("kg", "").replace(",", "."))
+    return float(weight_str
+                 .replace("kg", "")
+                 .replace("resis", "")
+                 .replace("?", "")
+                 .replace(",", "."))
 
 def parse_reps(reps_str):
     if not reps_str:
         return None
-    return float(reps_str.replace("r", "").replace(",", "."))
+    return float(reps_str
+                 .replace("reps", "")
+                 .replace("rep", "")
+                 .replace("r", "")
+                 .replace("?", "")
+                 .replace("«", "")
+                 .replace("»", "")
+                 .replace(",", "."))
 
 with open('logs/traininglog.txt', 'r') as file:
     lines = file.readlines()
 
 workouts = []
 
-lines.pop(0)  # Remove the header line
+lines = lines[4:] # Remove header lines
 
 for line in lines:
     line = line.replace("Svart strikk", "-10kg")
@@ -64,8 +75,8 @@ for line in lines:
             parenthesis_open = False
         continue
 
-    if line == "Annenhver":
-        continue  # Skip lines that are just "Annenhver"
+    if line == "Annenhver" or "cm" in line:
+        continue  # Skip lines that are just "Annenhver" or contain "cm"
 
     # New workout starts with a date and body weight (morning and evening)
     if re.match(r'^\d{2}\.\d{2}\.\d{4}', line):
@@ -86,16 +97,31 @@ for line in lines:
     if "km" in line or "90 grader" in line:
         continue
 
-    # If the line starts with a digit, it indicates weigts and reps for an exercise
-    if line[0].isdigit() and workout["exercises"] != None:
+    # If the line starts with a digit or "Bred", it indicates weigts and reps for an exercise
+    if (line[0].isdigit() or line.lower().startswith("bred:")) and workout["exercises"] != None:
+        line = re.sub(r"\(.*?\)", "", line).strip()
         parts = line.split(" ")
 
         sets = []
 
         for part in parts:
-            if "kg" in part:
+            if "/" in part:
+                part = part.split("/")[0]  # Take only the first part before the slash
+            
+            if "-" in part:
+                part = part.split("-")[0]
+
+            if "+" in part:
+                part = part.split("+")[0] # Take only the first part before the plus sign
+
+            if "greit" in part:
+                continue
+
+            if "kg" in part or "resis" in part:
                 sets.append({"weight": parse_weight(part)})
-            elif "r" in part:
+            elif "bred:" in part.lower() or "smal:" in part.lower(): # Pullups handling
+                sets.append({"weight": None})
+            elif "r" in part or "reps" in part or "rep" in part:
                 if len(sets) == 0:
                     sets.append({"weight": None, "reps": parse_reps(part)})
                 elif "reps" not in sets[-1]:
