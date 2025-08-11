@@ -92,7 +92,7 @@ export function ActivityBarChart({ data }: ActivityBarChartInterface) {
             <CardHeader>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                     <CardTitle>Workout Activity</CardTitle>
-                    <CardAction className="pb-3 sm:pb-0 pt-4 sm:pt-0">
+                    <CardAction className="pt-2">
                         <ToggleGroup
                             type="single"
                             value={year}

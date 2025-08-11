@@ -48,14 +48,14 @@ export function ChartLine({
 }: ChartLineInterface) {
     return (
         <Card className="py-4 sm:py-0">
-            <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
-                <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0 pt-4">
+            <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row mt-4 mb-3 mx-6">
+                <div className="flex flex-1 flex-col justify-center gap-1">
                     <CardTitle>{chartConfig.morning_weight.label}</CardTitle>
-                    <CardDescription className="pb-4">
+                    <CardDescription className="pb-2">
                         Showing morning weight over time
                     </CardDescription>
                 </div>
-                <CardAction className="px-6 pb-3 sm:pb-0 pt-4">
+                <CardAction className="pb-2">
                     <ToggleGroup
                         type="single"
                         value={timeRange}
