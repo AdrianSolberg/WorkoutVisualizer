@@ -11,6 +11,7 @@ import {
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardFooter,
@@ -25,6 +26,8 @@ import {
 } from "@/shadcn/ui/chart";
 import type { LogItem } from "@/types/workoutLogTypes";
 import { useEffect, useState } from "react";
+import { ToggleGroup, ToggleGroupItem } from "@/shadcn/ui/toggle-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shadcn/ui/select";
 
 export const description = "A bar chart with a custom label";
 
@@ -71,11 +74,53 @@ export function ActivityBarChart({ data }: ActivityBarChartInterface) {
         setChartData(chartData);
     }, [year]);
 
+    const getYears = () => {
+        const startYear = Number(data.find(item => item.date)?.date.slice(0, 4));
+        const currentYear = new Date().getFullYear();
+        const yearItems = [];
+        for (let year = startYear; year <= currentYear; year++) {
+            yearItems.push(year);
+        }
+        return yearItems;
+    };
+
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Workout Activity</CardTitle>
-                <CardDescription>{year}</CardDescription>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                    <CardTitle>Workout Activity</CardTitle>
+                    <CardAction className="pb-3 sm:pb-0 pt-4 sm:pt-0">
+                        <ToggleGroup
+                            type="single"
+                            value={year}
+                            onValueChange={setYear}
+                            variant="outline"
+                            className="hidden *:data-[slot=toggle-group-item]:!px-4 @[767px]/card:flex"
+                        >
+                            {getYears().map((year) => (
+                                <ToggleGroupItem key={year} value={String(year)}>
+                                    {year}
+                                </ToggleGroupItem>
+                            ))}
+                        </ToggleGroup>
+                        <Select value={year} onValueChange={setYear}>
+                            <SelectTrigger
+                                className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
+                                size="sm"
+                                aria-label="Select a value"
+                            >
+                                <SelectValue placeholder={year} />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl">
+                                {getYears().map((year) => (
+                                    <SelectItem key={year} value={String(year)} className="rounded-lg">
+                                        {year}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </CardAction>
+                </div>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
