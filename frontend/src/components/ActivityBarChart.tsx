@@ -13,7 +13,6 @@ import {
     Card,
     CardAction,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -51,6 +50,8 @@ export function ActivityBarChart({ data }: ActivityBarChartInterface) {
 
     useEffect(() => {
         const monthCounts: Record<string, number> = {};
+        const startDate = new Date(data.find(item => item.date)?.date ?? "");
+        const currentDate = new Date();
 
         // Date format is YYYY-MM-DD
         data.filter((w) => w.date.startsWith(year) && w.exercises.length > 0).forEach((item) => {
@@ -66,11 +67,13 @@ export function ActivityBarChart({ data }: ActivityBarChartInterface) {
         const chartData: { month: string; workouts: number }[] = [];
         monthNames.forEach((name, index) => {
             const key = String(index + 1).padStart(2, '0');
-            chartData.push({
-                month: name,
-                workouts: monthCounts[key] || 0,
+            if (Number(year) > startDate.getFullYear() && Number(year) < currentDate.getFullYear() || (Number(year) === startDate.getFullYear() && index >= startDate.getMonth()) || (Number(year) === currentDate.getFullYear() && index <= currentDate.getMonth())) {
+                chartData.push({
+                    month: name,
+                    workouts: monthCounts[key] || 0,
+                });
+            }
             });
-        });
         setChartData(chartData);
     }, [year]);
 
