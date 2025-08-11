@@ -32,7 +32,7 @@ export function FactCards({ data }: FactCardsInterface) {
             <CardHeader>
                 <CardTitle>All time stats</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 grid-rows-3 gap-4 flex-1 h-full">
+            <CardContent className="grid grid-cols-1 grid-rows-6 gap-4 flex-1 h-full md:grid-cols-2 md:grid-rows-3">
                 <Card className="@container/card">
                     <CardHeader>
                         <CardDescription>Start date</CardDescription>
@@ -59,6 +59,14 @@ export function FactCards({ data }: FactCardsInterface) {
                 </Card>
                 <Card className="@container/card">
                     <CardHeader>
+                        <CardDescription>Total volume</CardDescription>
+                        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                            {Math.round(totalVolume).toLocaleString()} kg
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+                <Card className="@container/card">
+                    <CardHeader>
                         <CardDescription>Total sets</CardDescription>
                         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                             {totalSets.toLocaleString()}
@@ -70,14 +78,6 @@ export function FactCards({ data }: FactCardsInterface) {
                         <CardDescription>Total reps</CardDescription>
                         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                             {Math.round(totalReps).toLocaleString()}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-                <Card className="@container/card">
-                    <CardHeader>
-                        <CardDescription>Total volume</CardDescription>
-                        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                            {Math.round(totalVolume).toLocaleString()} kg
                         </CardTitle>
                     </CardHeader>
                 </Card>
