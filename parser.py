@@ -27,7 +27,7 @@ def parse_reps(reps_str):
                  .replace("»", "")
                  .replace(",", "."))
 
-with open('logs/traininglog.txt', 'r') as file:
+with open('logs/workoutlog.txt', 'r') as file:
     lines = file.readlines()
 
 workouts = []
