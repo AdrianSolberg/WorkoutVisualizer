@@ -33,7 +33,6 @@ export const description = "A bar chart with a custom label";
 const chartConfig = {
     workouts: {
         label: "Workouts",
-        color: "var(--chart-2)",
     },
     label: {
         color: "var(--background)",
